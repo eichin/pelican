@@ -1,0 +1,7 @@
+The Debian Package python-pelican
+---------------------------------
+
+git clone https://github.com/ametaireau/pelican.git
+dh_make -p python-pelican_3.0 -i -c gpl3 --native (hand-tweaked for Affero)
+
+ -- Mark Eichin <eichin@thok.org>  Thu, 07 Jun 2012 23:34:47 -0400

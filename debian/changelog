@@ -1,0 +1,5 @@
+python-pelican (3.0) unstable; urgency=low
+
+  * Initial packaging, just a dh_make and some hand-cleanup.  Missing docs...
+
+ -- Mark Eichin <eichin@thok.org>  Thu, 07 Jun 2012 23:34:47 -0400

@@ -1,0 +1,18 @@
+Source: python-pelican
+Section: web
+Priority: extra
+Maintainer: Mark Eichin <eichin@thok.org>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.2
+Homepage: http://pelican.notmyidea.org/
+#Vcs-Git: git://git.debian.org/collab-maint/python-pelican.git
+#Vcs-Browser: http://git.debian.org/?p=collab-maint/python-pelican.git;a=summary
+
+Package: python-pelican
+Architecture: all
+Depends: ${misc:Depends}, python-markdown, python-docutils, python-webhelpers, python-jinja2, python-pygments, python-tz
+Suggests: rsync
+Description: A tool to generate a static blog from reStructuredText or Markdown input files.
+ * Write your weblog content in reStructuredText or Markdown
+ * run "pelican" to generate the tree
+ * rsync it to your server.  Done.
