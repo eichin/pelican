@@ -47,7 +47,9 @@ class RstReaderTest(unittest.TestCase):
         # unmodified
         content, _ = readers.read_file(_filename('article.rst'))
         expected = "<p>This is some content. With some stuff to "\
-                   "&quot;typogrify&quot;.</p>\n"
+                   "&quot;typogrify&quot;.</p>\n<p>Now with added "\
+                   'support for <abbr title="three letter acronym">'\
+                   'TLA</abbr>.</p>\n'
 
         self.assertEqual(content, expected)
 
@@ -55,15 +57,19 @@ class RstReaderTest(unittest.TestCase):
             # otherwise, typogrify should be applied
             content, _ = readers.read_file(_filename('article.rst'),
                                            settings={'TYPOGRIFY': True})
-            expected = "<p>This is some content. With some stuff to&nbsp;"\
-                       "&#8220;typogrify&#8221;.</p>\n"
+            expected = u"<p>This is some content. With some stuff to&nbsp;"\
+                       "&#8220;typogrify&#8221;.</p>\n<p>Now with added "\
+                       'support for <abbr title="three letter acronym">'\
+                       '<span class="caps">TLA</span></abbr>.</p>\n'
 
             self.assertEqual(content, expected)
         except ImportError:
             return unittest.skip('need the typogrify distribution')
 
+
 class MdReaderTest(unittest.TestCase):
 
+    @unittest.skipUnless(readers.Markdown, "markdown isn't installed")
     def test_article_with_md_extention(self):
         # test to ensure the md extension is being processed by the correct reader
         reader = readers.MarkdownReader({})
@@ -74,6 +80,7 @@ class MdReaderTest(unittest.TestCase):
         
         self.assertEqual(content, expected)
 
+    @unittest.skipUnless(readers.Markdown, "markdown isn't installed")
     def test_article_with_mkd_extension(self):
         # test to ensure the mkd extension is being processed by the correct reader
         reader = readers.MarkdownReader({})

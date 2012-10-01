@@ -16,7 +16,7 @@ except ImportError:
 import re
 
 from pelican.contents import Category, Tag, Author
-from pelican.utils import get_date, open
+from pelican.utils import get_date, pelican_open
 
 
 _METADATA_PROCESSORS = {
@@ -63,6 +63,18 @@ def render_node_to_html(document, node):
     return visitor.astext()
 
 
+class PelicanHTMLTranslator(HTMLTranslator):
+
+    def visit_abbreviation(self, node):
+        attrs = {}
+        if node.hasattr('explanation'):
+            attrs['title'] = node['explanation']
+        self.body.append(self.starttag(node, 'abbr', '', **attrs))
+
+    def depart_abbreviation(self, node):
+        self.body.append('</abbr>')
+
+
 class RstReader(Reader):
     enabled = bool(docutils)
     file_extensions = ['rst']
@@ -92,6 +104,7 @@ class RstReader(Reader):
         pub = docutils.core.Publisher(
                 destination_class=docutils.io.StringOutput)
         pub.set_components('standalone', 'restructuredtext', 'html')
+        pub.writer.translator_class = PelicanHTMLTranslator
         pub.process_programmatic_settings(None, extra_params, None)
         pub.set_source(source_path=filename)
         pub.publish()
@@ -116,7 +129,7 @@ class MarkdownReader(Reader):
 
     def read(self, filename):
         """Parse content and metadata of markdown files"""
-        text = open(filename)
+        text = pelican_open(filename)
         md = Markdown(extensions=set(self.extensions + ['meta']))
         content = md.convert(text)
 
@@ -133,7 +146,7 @@ class HtmlReader(Reader):
 
     def read(self, filename):
         """Parse content and metadata of (x)HTML files"""
-        with open(filename) as content:
+        with pelican_open(filename) as content:
             metadata = {'title': 'unnamed'}
             for i in self._re.findall(content):
                 key = i.split(':')[0][5:].strip()
@@ -172,8 +185,8 @@ def read_file(filename, fmt=None, settings=None):
 
     # eventually filter the content with typogrify if asked so
     if settings and settings['TYPOGRIFY']:
-        from typogrify import Typogrify
-        content = Typogrify.typogrify(content)
-        metadata['title'] = Typogrify.typogrify(metadata['title'])
+        from typogrify.filters import typogrify
+        content = typogrify(content)
+        metadata['title'] = typogrify(metadata['title'])
 
     return content, metadata
