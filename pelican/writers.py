@@ -8,7 +8,7 @@ import logging
 
 from codecs import open
 from functools import partial
-from feedgenerator import Atom1Feed, Rss201rev2Feed
+from webhelpers.feedgenerator import Atom1Feed, Rss201rev2Feed
 from jinja2 import Markup
 from pelican.paginator import Paginator
 from pelican.utils import get_relative_path, set_date_tzinfo
@@ -36,6 +36,8 @@ class Writer(object):
     def _add_item_to_the_feed(self, feed, item):
 
         title = Markup(item.title).striptags()
+        print "AUTHOR_NAME:", getattr(item, 'author', 'John Doe'), type(getattr(item, 'author', 'John Doe'))
+
         feed.add_item(
             title=title,
             link='%s/%s' % (self.site_url, item.url),
