@@ -192,6 +192,12 @@ class URLWrapper(object):
     def __str__(self):
         return str(self.name.encode('utf-8', 'replace'))
 
+    def replace(self, src, dst, count=None):
+        if count:
+            return str(self).replace(src, dst, count)
+        else:
+            return str(self).replace(src, dst)
+
     def __unicode__(self):
         return self.name
 
