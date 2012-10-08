@@ -10,7 +10,7 @@ Homepage: http://pelican.notmyidea.org/
 
 Package: python-pelican
 Architecture: all
-Depends: ${misc:Depends}, python-markdown, python-docutils, python-webhelpers, python-jinja2, python-pygments, python-tz
+Depends: ${misc:Depends}, python-markdown, python-docutils, python-webhelpers, python-jinja2, python-pygments, python-tz, python-unidecode
 Suggests: rsync
 Description: A tool to generate a static blog from reStructuredText or Markdown input files.
  * Write your weblog content in reStructuredText or Markdown
